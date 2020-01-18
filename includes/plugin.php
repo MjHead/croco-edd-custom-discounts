@@ -71,6 +71,7 @@ class Plugin {
 			return;
 		}
 
+		$this->props        = new Props();
 		$this->db           = new DB();
 		$this->code_factory = new Codes\Code_Factory();
 		//$this->edd_gateway  = new EDD_Gateway();

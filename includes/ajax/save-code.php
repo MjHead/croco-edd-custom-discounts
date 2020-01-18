@@ -21,21 +21,15 @@ class Save_Code extends Abstract_Endpoint {
 	 */
 	public function ajax_callback() {
 
-		$args  = $this->get_args();
-		$props = $args['code'];
+		$args    = $this->get_args();
+		$props   = $args['code'];
+		$code    = Plugin::instance()->code_factory->get_code( $props, true );
+		$code_id = false;
 
-		if ( ! empty( $props['start_date'] ) ) {
-			$props['start_date'] = strtotime( $props['start_date'] );
-		}
-
-		if ( ! empty( $props['end_date'] ) ) {
-			$props['end_date'] = strtotime( $props['end_date'] );
-		}
-
-		$code = Plugin::instance()->code_factory->get_code( $props, true );
+		$code->dates_to_timestamp();
 
 		if ( $code->sanitize() ) {
-			$code->save();
+			$code_id = $code->save();
 		} else {
 			return array(
 				'success' => false,
@@ -43,9 +37,25 @@ class Save_Code extends Abstract_Endpoint {
 			);
 		}
 
+		if ( ! $code_id ) {
+			return array(
+				'success' => false,
+				'data'    => array( 'message' => 'Can`t create the code. Please try again later.' ),
+			);
+		}
+
+		if ( ! empty( $props['ID'] ) ) {
+			$redirect = false;
+		} else {
+			$redirect = add_query_arg(
+				array( Plugin::instance()->code_query_var => $code_id ),
+				Plugin::instance()->dashboard->page_url( 'single-code' )
+			);
+		}
+
 		return array(
-			'success' => true,
-			'items'   => Plugin::instance()->db->query( array(), $limit, $offset ),
+			'success'  => true,
+			'redirect' => $redirect,
 		);
 	}
 

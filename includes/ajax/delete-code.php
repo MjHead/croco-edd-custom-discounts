@@ -1,6 +1,8 @@
 <?php
 namespace CCDE\Ajax;
 
+use CCDE\Plugin;
+
 class Delete_Code extends Abstract_Endpoint {
 
 	/**
@@ -19,6 +21,20 @@ class Delete_Code extends Abstract_Endpoint {
 	 */
 	public function ajax_callback() {
 
+		$args = $this->get_args();
+		$code = $args['code'];
+
+		if ( ! $code ) {
+			return array(
+				'success' => false,
+				'data'    => array( 'message' => 'Code ID not found in request' ),
+			);
+		}
+
+		Plugin::instance()->db->delete( array( 'ID' => $code ) );
+
+		return array( 'success' => true );
+
 	}
 
 	/**
@@ -28,6 +44,19 @@ class Delete_Code extends Abstract_Endpoint {
 	 */
 	public function permission_callback() {
 		return current_user_can( 'manage_options' );
+	}
+
+	/**
+	 * Returns arguments list
+	 *
+	 * @return [type] [description]
+	 */
+	public function args() {
+		return array(
+			'code' => array(
+				'default' => 0,
+			),
+		);
 	}
 
 }

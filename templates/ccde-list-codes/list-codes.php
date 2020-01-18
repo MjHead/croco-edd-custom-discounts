@@ -19,7 +19,7 @@
 			slot="heading"
 		>
 			<span slot="id"><?php _e( 'ID', 'croco-edd-custom-discounts' ); ?></span>
-			<span slot="name"><?php _e( 'Name e-mail', 'croco-edd-custom-discounts' ); ?></span>
+			<span slot="name"><?php _e( 'Name', 'croco-edd-custom-discounts' ); ?></span>
 			<span slot="code"><?php _e( 'Code', 'croco-edd-custom-discounts' ); ?></span>
 			<span slot="dates"><?php _e( 'Active for', 'croco-edd-custom-discounts' ); ?></span>
 			<span slot="uses"><?php _e( 'Uses', 'croco-edd-custom-discounts' ); ?></span>
@@ -34,17 +34,18 @@
 		>
 			<span slot="id">{{ item.ID }}</span>
 			<span slot="name">{{ item.name }}</span>
-			<span slot="code">{{ getServiceLabel( item.service ) }}</span>
-			<span slot="dates">{{ getProviderLabel( item.provider ) }}</span>
-			<span slot="uses">{{ item.date }}</span>
-			<span slot="status">{{ item.slot }} - {{ item.slot_end }}</span>
+			<span slot="code">{{ item.code }}</span>
+			<span slot="dates">{{ getDateString( item ) }}</span>
+			<span slot="uses">{{ getUseString( item ) }}</span>
+			<span slot="status">{{ item.status }}</span>
 			<div slot="actions">
 				<cx-vui-button
 					button-style="link-accent"
-					size="mini"
+					size="link"
 					tag-name="a"
 					:url="getSinglePageLink( item )"
 				><span slot="label"><?php _e( 'Edit', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<cx-vui-button
 					button-style="link-error"
 					size="link"
@@ -68,7 +69,7 @@
 		@on-ok="handleDelete"
 	>
 		<div class="cx-vui-subtitle" slot="title"><?php
-			_e( 'Are you sure? Deleted appointment can\'t be restored.', 'croco-edd-custom-discounts' );
+			_e( 'Are you sure? Deleted code can\'t be restored.', 'croco-edd-custom-discounts' );
 		?></div>
 	</cx-vui-popup>
 </div>

@@ -76,6 +76,7 @@ class Single_Code extends Base {
 		if ( $this->is_edit_page() ) {
 
 			$code = Plugin::instance()->code_factory->get_code( array( 'id' => $this->get_id_from_request() ) );
+			$code->timestamps_to_date();
 
 			if ( ! $code->exists() ) {
 				$not_found = true;

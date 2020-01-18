@@ -108,7 +108,7 @@
 
 				jQuery.ajax({
 					url: window.ajaxurl,
-					type: 'GET',
+					type: 'POST',
 					dataType: 'json',
 					data: {
 						action: window.CCDEConfig.ajax.save_code,
@@ -120,10 +120,21 @@
 					self.isLoading = false;
 
 					if ( response.success ) {
-						self.itemsList = response.items;
-						if ( response.total ) {
-							self.totalItems = parseInt( response.total, 10 );
+						if ( response.redirect ) {
+							window.location = response.redirect;
+						} else {
+							self.$CXNotice.add( {
+								message: 'Saved!',
+								type: 'success',
+								duration: 7000,
+							} );
 						}
+					} else {
+						self.$CXNotice.add( {
+							message: response.data.message,
+							type: 'error',
+							duration: 7000,
+						} );
 					}
 
 				}).fail( function() {

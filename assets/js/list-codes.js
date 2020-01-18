@@ -29,11 +29,14 @@
 				this.deleteItem   = itemID;
 				this.deleteDialog = true;
 			},
-			getSinglePageLink: function( itemID ) {
+			getSinglePageLink: function( item ) {
 
 				var baseURL = window.CCDEConfig.single_url;
+				var itemID  = false;
 
-				itemID = itemID || false;
+				if ( item && item.ID ) {
+					itemID  = item.ID;
+				}
 
 				if ( itemID ) {
 					baseURL += '&' + window.CCDEConfig.code_key + '=' + itemID;
@@ -41,6 +44,26 @@
 
 				return baseURL;
 
+			},
+			getDateString: function( item ) {
+
+				if ( item.start_date && item.end_date ) {
+					return item.start_date + ' - ' + item.end_date;
+				} else if ( item.start_date && ! item.end_date ) {
+					return 'from ' + item.start_date;
+				} else if ( ! item.start_date && item.end_date ) {
+					return 'until ' + item.start_date;
+				} else {
+					return '';
+				}
+
+			},
+			getUseString: function( item ) {
+				var result = item.used;
+				if ( 0 < parseInt( item.max_uses, 10 ) ) {
+					result += '/' + item.max_uses;
+				}
+				return result;
 			},
 			handleDelete: function() {
 

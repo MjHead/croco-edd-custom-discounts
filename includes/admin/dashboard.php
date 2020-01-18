@@ -95,6 +95,11 @@ class Dashboard {
 	 * @return [type]       [description]
 	 */
 	public function page_url( $slug ) {
+
+		if ( false === strpos( $slug, 'ccde-' ) ) {
+			$slug = 'ccde-' . $slug;
+		}
+
 		if ( isset( $this->pages[ $slug ] ) ) {
 			return add_query_arg(
 				array( 'page' => $slug ),

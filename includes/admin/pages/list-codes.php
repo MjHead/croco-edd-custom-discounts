@@ -44,6 +44,22 @@ class List_Codes extends Base {
 				margin-right: 20px;
 				padding-bottom: 10px;
 			}
+			.cx-vue-list-table .cell--id {
+				max-width: 100px;
+				flex: 0 0 100px;
+			}
+			.cx-vue-list-table .cell--name,
+			.cx-vue-list-table .cell--code,
+			.cx-vue-list-table .cell--dates,
+			.cx-vue-list-table .cell--uses,
+			.cx-vue-list-table .cell--status {
+				max-width: 15%;
+				flex: 0 0 15%;
+			}
+			.cx-vue-list-table .cell--actions {
+				max-width: calc( 25% - 100px );
+				flex: 0 0 calc( 25% - 100px );
+			}
 		</style>
 		<div class="wrap"><div id="ccde-list-codes"></div></div>
 		<?php

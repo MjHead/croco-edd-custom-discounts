@@ -55,52 +55,7 @@ class DB {
 	 * @return [type] [description]
 	 */
 	public function schema() {
-		return array(
-			'ID' => array(
-				'definition' => 'bigint(20) NOT NULL AUTO_INCREMENT',
-				'default'    => false,
-			),
-			'name' => array(
-				'definition' => 'text',
-				'default'    => false,
-			),
-			'code'    => array(
-				'definition' => 'text',
-				'default'    => false,
-			),
-			'type'   => array(
-				'definition' => 'text',
-				'default'    => 'percentage',
-			),
-			'amount' => array(
-				'definition' => 'int',
-				'default'    => false,
-			),
-			'start_date'       => array(
-				'definition' => 'bigint(20) NOT NULL',
-				'default'    => false,
-			),
-			'end_date'       => array(
-				'definition' => 'bigint(20) NOT NULL',
-				'default'    => false,
-			),
-			'max_uses'   => array(
-				'definition' => 'int',
-				'default'    => 0,
-			),
-			'used'   => array(
-				'definition' => 'int',
-				'default'    => 0,
-			),
-			'status'   => array(
-				'definition' => 'text',
-				'default'    => 'active',
-			),
-			'meta'   => array(
-				'definition' => 'longtext',
-				'default'    => '',
-			),
-		);
+		return Plugin::instance()->props->props_map();
 	}
 
 	/**
@@ -115,7 +70,7 @@ class DB {
 		$columns_schema  = '';
 
 		foreach ( $this->schema() as $col => $data ) {
-			$columns_schema .= $col . ' ' . $data['definition'] . ',';
+			$columns_schema .= $col . ' ' . $data['sql'] . ',';
 		}
 
 		return "CREATE TABLE $table (
@@ -134,7 +89,7 @@ class DB {
 
 		if ( empty( $this->defaults ) ) {
 			foreach ( $this->schema() as $col => $data ) {
-				$this->defaults[ $col ] = $data['default'];
+				$this->defaults[ $col ] = $data['default_sql'];
 			}
 		}
 
@@ -153,6 +108,12 @@ class DB {
 		foreach ( $this->get_defaults() as $default_key => $default_value ) {
 			if ( ! isset( $data[ $default_key ] ) ) {
 				$data[ $default_key ] = $default_value;
+			}
+		}
+
+		foreach ( $data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$data[ $key ] = maybe_serialize( $value );
 			}
 		}
 
@@ -177,6 +138,12 @@ class DB {
 		foreach ( $this->defaults as $default_key => $default_value ) {
 			if ( ! isset( $data[ $default_key ] ) ) {
 				$data[ $default_key ] = $default_value;
+			}
+		}
+
+		foreach ( $new_data as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$new_data[ $key ] = maybe_serialize( $value );
 			}
 		}
 

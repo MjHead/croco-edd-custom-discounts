@@ -1,6 +1,8 @@
 <?php
 namespace CCDE\Codes;
 
+use CCDE\Plugin;
+
 abstract class Abstract_Code {
 
 	/**
@@ -18,17 +20,31 @@ abstract class Abstract_Code {
 	abstract public function get_props();
 
 	/**
+	 * Returns required props list
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_required_props() {
+		return Plugin::instance()->props->get_required_props();
+	}
+
+	/**
 	 * Returns default props of any code
 	 *
 	 * @return [type] [description]
 	 */
 	public function default_props() {
-		return array(
-			'type' => 'percentage',
-			'meta' => array(
-				'required_downloads' => array(),
-			),
-		);
+
+		$props_map = Plugin::instance()->props->props_map();
+		$result    = array();
+
+		foreach ( $props_map as $prop_name => $prop_data ) {
+			if ( ! empty( $prop_data['default_val'] ) ) {
+				$result[ $prop_name ] = $prop_data['default_val'];
+			}
+		}
+
+		return $result;
 	}
 
 }

@@ -27,8 +27,31 @@ class Get_Codes extends Abstract_Endpoint {
 
 		return array(
 			'success' => true,
-			'items'   => Plugin::instance()->db->query( array(), $limit, $offset ),
+			'items'   => $this->prepare_results( Plugin::instance()->db->query( array(), $limit, $offset ) ),
 		);
+	}
+
+	/**
+	 * Prepare results to send to front
+	 *
+	 * @return [type] [description]
+	 */
+	public function prepare_results( $raw ) {
+
+		if ( empty( $raw ) ) {
+			return $raw;
+		}
+
+		$result = array();
+
+		foreach ( $raw as $code_props ) {
+			$code = Plugin::instance()->code_factory->get_code( $code_props );
+			$code->timestamps_to_date();
+			$result[] = $code->get_props();
+		}
+
+		return $result;
+
 	}
 
 	/**
