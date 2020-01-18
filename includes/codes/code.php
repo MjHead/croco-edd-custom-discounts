@@ -258,4 +258,13 @@ class Code extends Abstract_Code {
 		}
 	}
 
+	/**
+	 * Check if discount code is valid for current cart items
+	 *
+	 * @return boolean [description]
+	 */
+	public function is_valid() {
+
+	}
+
 }
