@@ -15,6 +15,17 @@
 				deleteItem: false,
 				isLoading: false,
 				filters: {},
+				generatePopup: false,
+				generateCodesNum: 100,
+				generated: 0,
+				generating: false,
+				generateHash: 'c55441e06674374fc26f2f9f5b1b11de',
+				generateStep: 200,
+				propsList: window.CCDEConfig.props,
+				codeMap: JSON.parse( JSON.stringify( window.CCDEConfig.code ) ),
+				downloadsList: window.CCDEConfig.downloads_list,
+				exportColumns: [],
+				exportPopup: false,
 			};
 		},
 		mounted: function() {
@@ -28,6 +39,83 @@
 			showDeleteDialog: function( itemID ) {
 				this.deleteItem   = itemID;
 				this.deleteDialog = true;
+			},
+			handleExport: function() {
+
+				if ( ! this.generateHash || ! this.exportColumns.length ) {
+					return;
+				}
+
+				window.location = window.ajaxurl + '?action=' + window.CCDEConfig.ajax.export_codes + '&hash=' + this.generateHash + '&columns=' + this.exportColumns.join( ',' ) + '&nonce=' + window.CCDEConfig.nonce;
+			},
+			handleGenerate: function() {
+
+				var number = this.generateCodesNum;
+
+				if ( number > this.generateStep ) {
+					number = this.generateStep;
+				}
+
+				this.generating = true;
+
+				this.generateCodesRequest( 0, number );
+			},
+			generateCodesRequest: function( offset, number ) {
+
+				offset = parseInt( offset, 10 );
+				number = parseInt( number, 10 );
+
+
+				var self  = this,
+					total = offset + number;
+
+				self.generateCodesNum = parseInt( self.generateCodesNum, 10 );
+
+				jQuery.ajax({
+					url: window.ajaxurl,
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						action: window.CCDEConfig.ajax.generate_codes,
+						nonce: window.CCDEConfig.nonce,
+						code: self.codeMap,
+						number: number,
+						offset: offset,
+					},
+				}).done(function( response ) {
+
+					if ( ! response.success ) {
+						self.$CXNotice.add( {
+							message: response.data,
+							type: 'error',
+							duration: 7000,
+						} );
+					} else {
+
+						if ( self.generateCodesNum > total ) {
+
+							number = self.generateCodesNum - total;
+
+							if ( number > self.generateStep ) {
+								number = self.generateStep;
+							}
+
+							self.generateCodesRequest( total, number );
+
+						}
+
+						self.generateHash = response.hash;
+						self.generated    = response.number;
+
+					}
+
+				}).fail(function() {
+					self.$CXNotice.add( {
+						message: 'Error!',
+						type: 'error',
+						duration: 7000,
+					} );
+				});
 			},
 			getSinglePageLink: function( item ) {
 

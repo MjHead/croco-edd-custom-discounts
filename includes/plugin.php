@@ -80,6 +80,8 @@ class Plugin {
 			new Ajax\Get_Codes(),
 			new Ajax\Delete_Code(),
 			new Ajax\Save_Code(),
+			new Ajax\Generate_Codes(),
+			new Ajax\Export_Codes(),
 		) );
 
 		$this->dashboard = new Admin\Dashboard( array(

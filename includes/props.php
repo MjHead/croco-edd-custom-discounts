@@ -76,7 +76,34 @@ class Props {
 				),
 				'required'    => false,
 			),
+			'generator_hash' => array(
+				'sql'         => 'text',
+				'default_sql' => false,
+				'default_val' => false,
+				'required'    => false,
+			),
 		);
+	}
+
+	/**
+	 * Returns props list for JS
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_props_for_js() {
+
+		$props = array_keys( $this->props_map() );
+		$res   = array();
+
+		foreach ( $props as $prop ) {
+			$res[] = array(
+				'value' => $prop,
+				'label' => $prop,
+			);
+		}
+
+		return $res;
+
 	}
 
 	/**

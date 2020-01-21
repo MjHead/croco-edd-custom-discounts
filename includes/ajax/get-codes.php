@@ -45,7 +45,7 @@ class Get_Codes extends Abstract_Endpoint {
 		$result = array();
 
 		foreach ( $raw as $code_props ) {
-			$code = Plugin::instance()->code_factory->get_code( $code_props );
+			$code = Plugin::instance()->code_factory->get_code( $code_props, true );
 			$code->timestamps_to_date( 'd/m/Y' );
 			$result[] = $code->get_props();
 		}

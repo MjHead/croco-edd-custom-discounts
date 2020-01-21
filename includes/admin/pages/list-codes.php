@@ -74,10 +74,13 @@ class List_Codes extends Base {
 		return new Page_Config(
 			$this->slug(),
 			array(
-				'ajax'       => Plugin::instance()->ajax->get_actions(),
-				'nonce'      => Plugin::instance()->ajax->nonce(),
-				'single_url' => Plugin::instance()->dashboard->page_url( 'ccde-single-code' ),
-				'code_key'   => Plugin::instance()->code_query_var,
+				'ajax'           => Plugin::instance()->ajax->get_actions(),
+				'nonce'          => Plugin::instance()->ajax->nonce(),
+				'single_url'     => Plugin::instance()->dashboard->page_url( 'ccde-single-code' ),
+				'code_key'       => Plugin::instance()->code_query_var,
+				'code'           => Plugin::instance()->code_factory->get_code()->get_props(),
+				'downloads_list' => Plugin::instance()->db->query_posts_for_js( 'download' ),
+				'props'          => Plugin::instance()->props->get_props_for_js(),
 			)
 		);
 	}

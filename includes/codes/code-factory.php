@@ -31,4 +31,25 @@ class Code_Factory {
 
 	}
 
+	/**
+	 * Create props hash
+	 *
+	 * @return [type] [description]
+	 */
+	public function create_hash( $props = array() ) {
+
+		$result = '';
+
+		foreach ( $props as $prop => $value ) {
+			if ( ! is_array( $value ) ) {
+				$result .= $value;
+			} else {
+				$result .= $this->create_hash( $value );
+			}
+		}
+
+		return md5( $result );
+
+	}
+
 }

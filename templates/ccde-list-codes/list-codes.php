@@ -9,6 +9,18 @@
 			tag-name="a"
 			:url="getSinglePageLink()"
 		><span slot="label"><?php _e( 'Add New', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<cx-vui-button
+			button-style="accent-border"
+			size="mini"
+			@click="generatePopup = true"
+		><span slot="label"><?php _e( 'Cenerate', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<cx-vui-button
+			button-style="accent-border"
+			size="mini"
+			@click="exportPopup = true"
+		><span slot="label"><?php _e( 'Export', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
 	</div>
 	<cx-vui-list-table
 		:is-empty="! itemsList.length"
@@ -71,5 +83,134 @@
 		<div class="cx-vui-subtitle" slot="title"><?php
 			_e( 'Are you sure? Deleted code can\'t be restored.', 'croco-edd-custom-discounts' );
 		?></div>
+	</cx-vui-popup>
+	<cx-vui-popup
+		v-model="exportPopup"
+		body-width="850px"
+		:show-ok="false"
+		:show-cancel="false"
+	>
+		<div class="cx-vui-subtitle" slot="title"><?php
+			_e( 'Export promocodes', 'croco-edd-custom-discounts' );
+		?></div>
+		<div slot="content">
+			<cx-vui-input
+				label="Generate hash"
+				description="Export codes with this hash"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="generateHash"
+			></cx-vui-input>
+			<cx-vui-f-select
+				label="Columns to export"
+				:wrapper-css="[ 'equalwidth' ]"
+				placeholder="Select columns..."
+				:multiple="true"
+				:options-list="propsList"
+				v-model="exportColumns"
+			></cx-vui-f-select>
+			<cx-vui-button
+				button-style="accent"
+				size="mini"
+				@click="handleExport"
+			><span slot="label"><?php _e( 'Export', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
+		</div>
+	</cx-vui-popup>
+	<cx-vui-popup
+		v-model="generatePopup"
+		body-width="850px"
+		:show-ok="false"
+		:show-cancel="false"
+	>
+		<div class="cx-vui-subtitle" slot="title"><?php
+			_e( 'Generate promocodes', 'croco-edd-custom-discounts' );
+		?></div>
+		<div v-if="generating" slot="content">
+			Generating codes: {{ generated }} / {{ generateCodesNum }}.
+		</div>
+		<div slot="content" v-else>
+			<cx-vui-input
+				label="Codes number"
+				description="Discount codes number to generate"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="generateCodesNum"
+			></cx-vui-input>
+			<cx-vui-input
+				label="Name"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.name"
+			></cx-vui-input>
+			<cx-vui-select
+				label="Type"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				:options-list="[
+					{
+						value: 'percentage',
+						label: 'Percentage',
+					},
+					{
+						value: 'flat',
+						label: 'Flat Amount',
+					}
+				]"
+				v-model="codeMap.type"
+			></cx-vui-select>
+			<cx-vui-input
+				label="Amount"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.amount"
+			></cx-vui-input>
+			<cx-vui-f-select
+				label="Download Requirements"
+				:wrapper-css="[ 'equalwidth' ]"
+				placeholder="Select option..."
+				:multiple="true"
+				:options-list="downloadsList"
+				v-model="codeMap.meta.required_downloads"
+			></cx-vui-f-select>
+			<cx-vui-input
+				label="Start date"
+				type="date"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.start_date"
+			></cx-vui-input>
+			<cx-vui-input
+				label="Expiration date"
+				type="date"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.end_date"
+			></cx-vui-input>
+			<cx-vui-input
+				label="Max Uses"
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.max_uses"
+			></cx-vui-input>
+			<cx-vui-textarea
+				label="Included Pricing IDs"
+				description="Format: 9::6,9::7,9::9."
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.meta.included_pricing_ids"
+			></cx-vui-textarea>
+			<cx-vui-textarea
+				label="Excluded Pricing IDs"
+				description="Format: 9::6,9::7,9::9."
+				:wrapper-css="[ 'equalwidth' ]"
+				size="fullwidth"
+				v-model="codeMap.meta.excluded_pricing_ids"
+			></cx-vui-textarea>
+			<cx-vui-button
+				button-style="accent"
+				size="mini"
+				@click="handleGenerate"
+			><span slot="label"><?php _e( 'Start', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
+		</div>
 	</cx-vui-popup>
 </div>
