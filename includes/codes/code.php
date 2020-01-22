@@ -90,6 +90,25 @@ class Code extends Abstract_Code {
 	}
 
 	/**
+	 * Returns meta value
+	 *
+	 * @param  [type] $key     [description]
+	 * @param  [type] $default [description]
+	 * @return [type]          [description]
+	 */
+	public function get_meta( $key, $default = false ) {
+
+		$meta = $this->get_prop( 'meta' );
+
+		if ( ! $meta ) {
+			$meta = array();
+		}
+
+		return isset( $meta[ $key ] ) ? $meta[ $key ] : $default;
+
+	}
+
+	/**
 	 * Check reuired props
 	 *
 	 * @return [type] [description]
@@ -246,6 +265,15 @@ class Code extends Abstract_Code {
 	}
 
 	/**
+	 * Returns required products list
+	 *
+	 * @return [type] [description]
+	 */
+	public function get_required_products() {
+		return $this->get_meta( 'required_downloads', array() );
+	}
+
+	/**
 	 * Returns sanitizing errors
 	 *
 	 * @return [type] [description]
@@ -263,7 +291,37 @@ class Code extends Abstract_Code {
 	 *
 	 * @return boolean [description]
 	 */
-	public function is_valid() {
+	public function is_valid( $user = false ) {
+		return true;
+	}
+
+	/**
+	 * Get Discounted Amount.
+	 *
+	 * @param string|int $base_price Price before discount.
+	 * @return float $discounted_price Amount after discount.
+	 */
+	public function get_discounted_amount( $base_price ) {
+
+		// Start off setting the amount as the base price.
+		$amount          = $base_price;
+		$type            = $this->get_prop( 'type' );
+		$discount_amount = $this->get_prop( 'amount' );
+
+		if ( 'flat' == $type ) {
+
+			$amount = $base_price - $discount_amount;
+
+			if ( $amount < 0 ) {
+				$amount = 0;
+			}
+
+		} else {
+			// Percentage discount
+			$amount = $base_price - ( $base_price * ( $discount_amount / 100 ) );
+		}
+
+		return $amount;
 
 	}
 
