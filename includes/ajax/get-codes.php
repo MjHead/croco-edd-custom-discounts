@@ -28,6 +28,7 @@ class Get_Codes extends Abstract_Endpoint {
 		return array(
 			'success' => true,
 			'items'   => $this->prepare_results( Plugin::instance()->db->query( array(), $limit, $offset ) ),
+			'total'   => Plugin::instance()->db->count( array() ),
 		);
 	}
 

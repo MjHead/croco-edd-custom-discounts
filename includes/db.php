@@ -432,6 +432,13 @@ class DB {
 
 		$query = '';
 
+		if ( empty( $order ) ) {
+			$order = array(
+				'orderby' => 'ID',
+				'order'   => 'DESC',
+			);
+		}
+
 		if ( ! empty( $order['orderby'] ) ) {
 
 			$orderby = $order['orderby'];

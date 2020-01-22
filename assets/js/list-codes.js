@@ -10,7 +10,7 @@
 				itemsList: [],
 				totalItems: 0,
 				offset: 0,
-				perPage: 30,
+				perPage: 100,
 				deleteDialog: false,
 				deleteItem: false,
 				isLoading: false,
@@ -30,6 +30,11 @@
 		},
 		mounted: function() {
 			this.getItems();
+		},
+		computed: {
+			currentPage: function() {
+				return Math.floor( this.offset / this.perPage ) + 1;
+			},
 		},
 		methods: {
 			changePage: function( page ) {

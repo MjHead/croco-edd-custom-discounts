@@ -22,6 +22,13 @@
 			@click="exportPopup = true"
 		><span slot="label"><?php _e( 'Export', 'croco-edd-custom-discounts' ); ?></span></cx-vui-button>
 	</div>
+	<cx-vui-pagination
+		v-if="perPage < totalItems"
+		:total="totalItems"
+		:current="currentPage"
+		:page-size="perPage"
+		@on-change="changePage"
+	></cx-vui-pagination>
 	<cx-vui-list-table
 		:is-empty="! itemsList.length"
 		empty-message="<?php _e( 'No codes found', 'croco-edd-custom-discounts' ); ?>"
@@ -70,6 +77,7 @@
 		v-if="perPage < totalItems"
 		:total="totalItems"
 		:page-size="perPage"
+		:current="currentPage"
 		@on-change="changePage"
 	></cx-vui-pagination>
 	<cx-vui-popup
