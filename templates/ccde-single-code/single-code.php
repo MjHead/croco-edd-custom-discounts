@@ -82,6 +82,27 @@
 						size="fullwidth"
 						v-model="code.max_uses"
 					></cx-vui-input>
+					<cx-vui-select
+						label="Status"
+						description="Code status - active or inactive"
+						:wrapper-css="[ 'equalwidth' ]"
+						size="fullwidth"
+						:options-list="[
+							{
+								value: 'active',
+								label: 'Active',
+							},
+							{
+								value: 'inactive',
+								label: 'Inactive',
+							},
+							{
+								value: 'expired',
+								label: 'Expired',
+							}
+						]"
+						v-model="code.status"
+					></cx-vui-select>
 					<cx-vui-textarea
 						label="Included Pricing IDs"
 						description="Format: 9::6,9::7,9::9. Code will work only for specified download IDs and pricing option IDs pairs."

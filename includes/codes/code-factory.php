@@ -6,6 +6,14 @@ use CCDE\Plugin;
 class Code_Factory {
 
 	private $found_codes = array();
+	private $from_cache  = false;
+
+	/**
+	 * Set from_cache falg to true
+	 */
+	public function set_from_cache() {
+		$this->from_cache = true;
+	}
 
 	/**
 	 * Returns new code by args
@@ -28,6 +36,15 @@ class Code_Factory {
 			return $this->found_codes[ $args['code'] ];
 		}
 
+		if ( $this->from_cache && ! empty( $args['ID'] ) ) {
+			$cached = $this->find_in_cache( $args['ID'] );
+
+			if ( $cached ) {
+				return $cached;
+			}
+
+		}
+
 		$code = Plugin::instance()->db->get_item( $args );
 
 		if ( ! empty( $code ) ) {
@@ -38,6 +55,23 @@ class Code_Factory {
 			return new Empty_Code();
 		}
 
+	}
+
+	/**
+	 * Find code in codes cache by ID
+	 *
+	 * @param  [type] $code_id [description]
+	 * @return [type]          [description]
+	 */
+	public function find_in_cache( $code_id ) {
+
+		foreach ( $this->found_codes as $code ) {
+			if ( absint( $code->get_prop( 'ID' ) ) === absint( $code_id ) ) {
+				return $code;
+			}
+		}
+
+		return false;
 	}
 
 	/**

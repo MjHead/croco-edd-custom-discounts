@@ -145,7 +145,7 @@
 				} else if ( item.start_date && ! item.end_date ) {
 					return 'from ' + item.start_date;
 				} else if ( ! item.start_date && item.end_date ) {
-					return 'until ' + item.start_date;
+					return 'until ' + item.end_date;
 				} else {
 					return '';
 				}

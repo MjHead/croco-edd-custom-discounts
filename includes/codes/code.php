@@ -42,12 +42,22 @@ class Code extends Abstract_Code {
 	}
 
 	/**
-	 * Check id this code has property
+	 * Check if this code has not empty property
 	 *
 	 * @param  [type]  $prop [description]
 	 * @return boolean       [description]
 	 */
 	public function has_prop( $prop ) {
+		return ! empty( $this->props[ $prop ] );
+	}
+
+	/**
+	 * Check if this property defined for code
+	 *
+	 * @param  [type]  $prop [description]
+	 * @return boolean       [description]
+	 */
+	public function prop_exists( $prop ) {
 		return ! empty( $this->props[ $prop ] );
 	}
 
@@ -105,6 +115,20 @@ class Code extends Abstract_Code {
 		}
 
 		return isset( $meta[ $key ] ) ? $meta[ $key ] : $default;
+
+	}
+
+	public function set_meta( $key, $value ) {
+
+		$meta = $this->get_prop( 'meta' );
+
+		if ( ! $meta ) {
+			$meta = array();
+		}
+
+		$meta[ $key ] = $value;
+
+		$this->set_prop( 'meta', $meta );
 
 	}
 
@@ -284,15 +308,6 @@ class Code extends Abstract_Code {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * Check if discount code is valid for current cart items
-	 *
-	 * @return boolean [description]
-	 */
-	public function is_valid( $user = false ) {
-		return true;
 	}
 
 	/**

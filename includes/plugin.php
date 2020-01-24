@@ -74,7 +74,6 @@ class Plugin {
 		$this->props        = new Props();
 		$this->db           = new DB();
 		$this->code_factory = new Codes\Code_Factory();
-		$this->edd_gateway  = new EDD_Gateway();
 
 		$this->ajax = new Ajax\Factory( array(
 			new Ajax\Get_Codes(),
@@ -88,6 +87,8 @@ class Plugin {
 			new Admin\Pages\List_Codes(),
 			new Admin\Pages\Single_Code(),
 		) );
+
+		$this->edd_gateway = new EDD\Gateway();
 
 	}
 
