@@ -39,6 +39,8 @@ class Code extends Abstract_Code {
 			}
 		}
 
+		do_action( 'ccde/codes/code/init', $this );
+
 	}
 
 	/**

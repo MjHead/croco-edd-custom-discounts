@@ -50,6 +50,14 @@
 						@on-input-change="clearError( 'amount' )"
 						v-model="code.amount"
 					></cx-vui-input>
+					<cx-vui-select
+						label="Custom Rules"
+						description="Select custom rule to process this code"
+						:wrapper-css="[ 'equalwidth' ]"
+						size="fullwidth"
+						:options-list="customRules"
+						v-model="code.meta.custom_rule"
+					></cx-vui-select>
 					<cx-vui-f-select
 						label="Download Requirements"
 						description="Select Downloads relevant to this discount. If left blank, this discount can be used on any product"

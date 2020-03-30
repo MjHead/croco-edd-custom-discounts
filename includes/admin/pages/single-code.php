@@ -97,6 +97,7 @@ class Single_Code extends Base {
 				'single_url'     => Plugin::instance()->dashboard->page_url( $this->slug() ),
 				'code_key'       => Plugin::instance()->code_query_var,
 				'downloads_list' => Plugin::instance()->db->query_posts_for_js( 'download' ),
+				'custom_rules'   => Plugin::instance()->custom_rules->get_rules_for_options(),
 			)
 		);
 	}

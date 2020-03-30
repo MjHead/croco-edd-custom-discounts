@@ -74,6 +74,7 @@ class Plugin {
 		$this->props        = new Props();
 		$this->db           = new DB();
 		$this->code_factory = new Codes\Code_Factory();
+		$this->custom_rules = new Custom_Rules\Manager();
 
 		$this->ajax = new Ajax\Factory( array(
 			new Ajax\Get_Codes(),

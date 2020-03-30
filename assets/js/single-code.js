@@ -11,6 +11,7 @@
 				code: JSON.parse( JSON.stringify( window.CCDEConfig.code ) ),
 				notFound: window.CCDEConfig.not_found,
 				downloadsList: window.CCDEConfig.downloads_list,
+				customRules: window.CCDEConfig.custom_rules,
 				errors: {
 					name: false,
 					code: false,
