@@ -36,6 +36,8 @@ class Gateway {
 				return $result;
 			}
 
+			do_action( 'ccde/edd/gateway/code-found', $code );
+
 			$this->hits[] = $_id_or_code_or_name;;
 
 			return new Bridge( $code );
